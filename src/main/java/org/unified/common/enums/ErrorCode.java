@@ -17,6 +17,7 @@ public enum ErrorCode {
     XLSX_MISSING_HEADERS("XLSX_003", "XLSX file is empty.", HttpStatus.NO_CONTENT),
     XLSX_NULL_HEADER("XLSX_004", "Found blank or null header.", HttpStatus.PARTIAL_CONTENT),
     XLSX_DUPLICATE_HEADER("XLSX_005", "Duplicate header Found.", HttpStatus.NOT_ACCEPTABLE),
+    XLSX_INVALID_HEADER_TYPE("XLSX_006", "Invalid Header Found.", HttpStatus.NOT_ACCEPTABLE),
 
     // JSON ERRORS
     JSON_SYNTAX_ERROR("JSON_001", "Malformed JSON input", HttpStatus.BAD_REQUEST),

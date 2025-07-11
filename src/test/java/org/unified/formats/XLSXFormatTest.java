@@ -47,21 +47,45 @@ class XLSXFormatTest {
         assertEquals(ErrorCode.XLSX_DUPLICATE_HEADER, exception.getErrorCode());
     }
 
-//    @Test
-//    void testValidationMissingRequiredField() {
-//        InputStream inputStream = getClass().getResourceAsStream("/missing_employee_id.xlsx");
-//        XLSXFormat parser = new XLSXFormat(inputStream, "MissingField");
-//        FormatException exception = assertThrows(FormatException.class, parser::validateFields);
-//        assertEquals(ErrorCode.XLSX_VALIDATION_FAILED, exception.getErrorCode());
-//    }
+    @Test
+    void testMalformedXlsxFileThrowsException() {
+        InputStream inputStream = getClass().getResourceAsStream("/XLSX/malformed.xlsx");
+        assertThrows(FormatException.class, () -> new XLSXFormat(inputStream, "CorruptFile"));
+    }
 
-//    @Test
-//    void testValidationIncorrectType() {
-//        InputStream inputStream = getClass().getResourceAsStream("/invalid_age_type.xlsx");
-//        XLSXFormat parser = new XLSXFormat(inputStream, "BadType");
-//        FormatException exception = assertThrows(FormatException.class, parser::validateFields);
-//        assertEquals(ErrorCode.XLSX_VALIDATION_FAILED, exception.getErrorCode());
-//    }
+    @Test
+    void testEmptyHeaderThrowsException() {
+        InputStream inputStream = getClass().getResourceAsStream("/XLSX/empty_header.xlsx");
+        FormatException exception = assertThrows(FormatException.class, () -> new XLSXFormat(inputStream, "EmptyHeader"));
+        assertEquals(ErrorCode.XLSX_NULL_HEADER, exception.getErrorCode());
+    }
+
+    @Test
+    void testDuplicateHeadersThrowsException() {
+        InputStream inputStream = getClass().getResourceAsStream("/XLSX/duplicate_headers.xlsx");
+        FormatException exception = assertThrows(FormatException.class, () -> new XLSXFormat(inputStream, "DuplicateHeader"));
+        assertEquals(ErrorCode.XLSX_DUPLICATE_HEADER, exception.getErrorCode());
+    }
+
+    @Test
+    void testNonTextHeadersRowThrowsException() {
+        InputStream inputStream = getClass().getResourceAsStream("/XLSX/numeric_header.xlsx");
+        FormatException exception = assertThrows(FormatException.class, () -> new XLSXFormat(inputStream, "NoHeaders"));
+        assertEquals(ErrorCode.XLSX_INVALID_HEADER_TYPE, exception.getErrorCode());
+    }
+
+    @Test
+    void testInternationalHeadersSupport() {
+        InputStream inputStream = getClass().getResourceAsStream("/XLSX/international_headers.xlsx");
+        XLSXFormat parser = new XLSXFormat(inputStream, "IntlHeaders");
+
+        assertEquals(List.of("名", "Ålder", "Score"), parser.getColumnOrder());
+
+        List<Map<String, Object>> rows = parser.getDataRows();
+        assertFalse(rows.isEmpty());
+        assertTrue(rows.get(0).containsKey("Ålder"));
+    }
+
 
     @Test
     void testSourceNameFallback() {
