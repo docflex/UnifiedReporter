@@ -6,7 +6,7 @@ This project provides a **pluggable**, **extensible**, and **framework-agnostic*
 
 ### 🔁 Data Flow
 
-![ProposedFlowAndDesign.png](public/ProposedFlowAndDesign.png)
+![alt text](public/ProposedFlowAndDesign.png)
 
 1. Input Formats Supported:
 
@@ -26,7 +26,7 @@ This project provides a **pluggable**, **extensible**, and **framework-agnostic*
 
 ### 🧱 Component Design
 
-![img.png](public/ComponentView.png)
+![alt text](public/ComponentView.png)
 
 ---
 
