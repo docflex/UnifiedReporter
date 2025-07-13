@@ -9,15 +9,19 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     // CSV ERRORS
     CSV_PARSE_ERROR("CSV_001", "Failed to parse CSV file", HttpStatus.BAD_REQUEST),
-    CSV_EMPTY_FILE("CSV_002", "CSV file is empty", HttpStatus.BAD_REQUEST),
+    CSV_IO_ERROR("CSV_002", "Failed to read CSV input", HttpStatus.UNPROCESSABLE_ENTITY),
+    CSV_ROW_COLUMN_MISMATCH("CSV_003", "Issue with Row Column Mismatch", HttpStatus.NOT_ACCEPTABLE),
+    CSV_HEADER_MISSING("CSV_004", "CSV header is missing or null", HttpStatus.BAD_REQUEST),
+    CSV_HEADER_EMPTY("CSV_005", "CSV header does not contain any valid columns", HttpStatus.BAD_REQUEST),
+    CSV_HEADER_DUPLICATE("CSV_006", "CSV header contains duplicate columns", HttpStatus.BAD_REQUEST),
+
 
     // XLSX ERRORS
     XLSX_PARSE_ERROR("XLSX_001", "Failed to read Excel file", HttpStatus.BAD_REQUEST),
-    XLSX_INVALID_SHEET("XLSX_002", "Invalid sheet in Excel file", HttpStatus.UNPROCESSABLE_ENTITY),
-    XLSX_MISSING_HEADERS("XLSX_003", "XLSX file is empty.", HttpStatus.NO_CONTENT),
-    XLSX_NULL_HEADER("XLSX_004", "Found blank or null header.", HttpStatus.PARTIAL_CONTENT),
-    XLSX_DUPLICATE_HEADER("XLSX_005", "Duplicate header Found.", HttpStatus.NOT_ACCEPTABLE),
-    XLSX_INVALID_HEADER_TYPE("XLSX_006", "Invalid Header Found.", HttpStatus.NOT_ACCEPTABLE),
+    XLSX_MISSING_HEADERS("XLSX_002", "XLSX file is empty.", HttpStatus.NO_CONTENT),
+    XLSX_NULL_HEADER("XLSX_003", "Found blank or null header.", HttpStatus.PARTIAL_CONTENT),
+    XLSX_DUPLICATE_HEADER("XLSX_004", "Duplicate header Found.", HttpStatus.NOT_ACCEPTABLE),
+    XLSX_INVALID_HEADER_TYPE("XLSX_005", "Invalid Header Found.", HttpStatus.NOT_ACCEPTABLE),
 
     // JSON ERRORS
     JSON_SYNTAX_ERROR("JSON_001", "Malformed JSON input", HttpStatus.BAD_REQUEST),

@@ -50,7 +50,9 @@ class XLSXFormatTest {
     @Test
     void testMalformedXlsxFileThrowsException() {
         InputStream inputStream = getClass().getResourceAsStream("/XLSX/malformed.xlsx");
-        assertThrows(FormatException.class, () -> new XLSXFormat(inputStream, "CorruptFile"));
+        FormatException exception = assertThrows(FormatException.class,
+                () -> new XLSXFormat(inputStream, "CorruptFile"));
+        assertEquals(ErrorCode.XLSX_PARSE_ERROR, exception.getErrorCode());
     }
 
     @Test

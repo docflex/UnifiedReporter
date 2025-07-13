@@ -14,7 +14,15 @@
         <spring.version>6.2.7</spring.version>
         <jasperreports.version>6.21.0</jasperreports.version>
         <opencsv.version>5.9</opencsv.version>
+        <maven.build.encoding>UTF-8</maven.build.encoding>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jaspersoft</id>
+            <url>https://jaspersoft.jfrog.io/artifactory/jaspersoft-repo/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <!-- Spring Core Context -->
@@ -74,29 +82,29 @@
             <version>2.22.1</version>
         </dependency>
 
-        <!-- Log4j core -->
+        <!-- Log4j Core -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.22.1</version>
         </dependency>
 
-        <!-- Log4j API (required) -->
+        <!-- Log4j API -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.22.1</version>
         </dependency>
 
-        <!-- Annotation Processing -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
+            <version>1.18.36</version>
             <scope>provided</scope>
         </dependency>
 
-        <!--   Tests     -->
+        <!-- JUnit for Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -107,14 +115,27 @@
 
     <build>
         <plugins>
-            <!-- Java Compiler Plugin -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <encoding>${maven.build.encoding}</encoding>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.36</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <release>${java.version}</release>
+                    <encoding>${maven.build.encoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>
