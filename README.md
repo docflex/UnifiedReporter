@@ -2,7 +2,15 @@
 
 This project provides a **pluggable**, **extensible**, and **framework-agnostic** solution to convert structured input data formats like **XLSX**, **CSV**, **JSON**, and **ByteStream** into a **Unified Data Format**, which can then be used to generate reports in **PDF**, **HTML**, or **XML** using **JasperReports** or similar tools.
 
-![Build Status](https://github.com/docflex/UnifiedReporter/actions/workflows/maven.yml/badge.svg)
+
+### 📦 Package & Build Status
+
+[![Maven Package](https://img.shields.io/badge/github--package-0.0.1--SNAPSHOT-blue)](https://github.com/docflex/UnifiedReporter/packages)
+
+
+[![Build & Tests](https://github.com/docflex/UnifiedReporter/actions/workflows/build.yml/badge.svg)](https://github.com/docflex/UnifiedReporter/actions/workflows/build.yml)
+
+
 
 
 ## Architecture Overview
