@@ -43,6 +43,6 @@ jobs:
 
       - name: Publish to GitHub Packages
         env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME }}
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          USERNAME: ${{ secrets.USERNAME }}
+          TOKEN: ${{ secrets.TOKEN }}
         run: mvn deploy --settings .github/maven-settings.xml
