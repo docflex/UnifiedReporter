@@ -9,6 +9,32 @@
     <version>0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <name>UnifiedReporter</name>
+    <description>Unified Reporter CSV/XLSX Formatter</description>
+    <url>https://github.com/docflex/UnifiedReporter</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>docflex</id>
+            <name>Rehber Moin</name>
+            <email>rehbermoin.io@gmail.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/docflex/UnifiedReporter.git</connection>
+        <developerConnection>scm:git:ssh://github.com:docflex/UnifiedReporter.git</developerConnection>
+        <url>https://github.com/docflex/UnifiedReporter</url>
+    </scm>
+
     <distributionManagement>
         <repository>
             <id>github</id>
