@@ -40,3 +40,9 @@ jobs:
         with:
           name: unified-reporter-jar
           path: target/*.jar
+
+      - name: Publish to GitHub Packages
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        run: mvn deploy --settings .github/maven-settings.xml
