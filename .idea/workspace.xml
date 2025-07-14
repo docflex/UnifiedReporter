@@ -16,12 +16,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;docflex&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/docflex/UnifiedReporter.git&quot;,
+    &quot;accountId&quot;: &quot;48686cc0-21db-4167-8835-84b1e2435d9f&quot;
+  }
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$USER_HOME$/Library/Java/JavaVirtualMachines/temurin-17.0.15/Contents/Home/lib/src.zip!/jdk.compiler/com/sun/tools/javac/code/TypeTag.java" root0="SKIP_INSPECTION" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 1
-}</component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
   <component name="ProjectId" id="2zk5vYy2bkeRA9EHs558QXD0QRr" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />

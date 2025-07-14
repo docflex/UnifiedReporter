@@ -15,9 +15,9 @@ This project provides a **pluggable**, **extensible**, and **framework-agnostic*
 
 ## Architecture Overview
 
-### 🔁 Data Flow
+### 🔁 Proposed Flow & Design
 
-![alt text](public/ProposedFlowAndDesign.png)
+![alt text](public/ProposedFlow.png)
 
 1. Input Formats Supported:
 
@@ -37,7 +37,7 @@ This project provides a **pluggable**, **extensible**, and **framework-agnostic*
 
 ### 🧱 Component Design
 
-![alt text](public/ComponentView.png)
+![alt text](public/DesignHL.png)
 
 ---
 
