@@ -184,6 +184,6 @@ Pull requests are welcome! Please include:
 
 ## 📄 License
 
-MIT License — use it freely with attribution.
+This project is licensed under the [MIT License](LICENSE).
 
 
