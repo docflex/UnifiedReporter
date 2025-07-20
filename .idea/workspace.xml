@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="14a94aff-0919-4f79-bd51-56992ac04a62" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unified/common/enums/FileExportFormat.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unified/common/exceptions/ReportException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/unified/reporter/ReportCreator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/unified/reporter/ReportCreatorTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/templates/simple_report.jrxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/unified/UnifiedReporter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/unified/common/enums/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unified/common/enums/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/unified/common/exceptions/FormatException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unified/common/exceptions/FormatException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/unified/formats/CSVFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unified/formats/CSVFormat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/unified/formats/XLSXFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/unified/formats/XLSXFormat.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +57,7 @@
     "JUnit.formats in UnifiedReporter.executor": "Coverage",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "feature/Report-Creator-Service",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
