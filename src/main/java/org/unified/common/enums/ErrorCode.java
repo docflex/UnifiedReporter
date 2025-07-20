@@ -33,7 +33,19 @@ public enum ErrorCode {
 
     // GENERIC
     UNKNOWN_ERROR("GEN_001", "An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR),
-    IO_EXCEPTION("GEN_002", "IO Exception Occured for Input", HttpStatus.NOT_FOUND);
+    IO_EXCEPTION("GEN_002", "IO Exception Occured for Input", HttpStatus.NOT_FOUND),
+
+    // REPORT GENERATION ERRORS
+    REPORT_TEMPLATE_NULL("REP_001", "Report template InputStream is null", HttpStatus.BAD_REQUEST),
+    REPORT_TEMPLATE_COMPILE_FAILED("REP_002", "Failed to compile .jrxml template", HttpStatus.UNPROCESSABLE_ENTITY),
+    REPORT_TEMPLATE_LOAD_FAILED("REP_003", "Failed to load compiled .jasper template", HttpStatus.UNPROCESSABLE_ENTITY),
+    REPORT_DATA_EMPTY("REP_004", "Input data list is empty or null", HttpStatus.NO_CONTENT),
+    REPORT_FILL_FAILED("REP_005", "Failed to fill the report with provided data and parameters", HttpStatus.INTERNAL_SERVER_ERROR),
+    REPORT_EXPORT_FAILED("REP_006", "Failed to export the report to the selected format", HttpStatus.INTERNAL_SERVER_ERROR),
+    REPORT_OUTPUT_PATH_INVALID("REP_007", "Output path is null or inaccessible", HttpStatus.BAD_REQUEST),
+    REPORT_FORMAT_UNSUPPORTED("REP_008", "Unsupported export format", HttpStatus.NOT_ACCEPTABLE),
+    REPORT_DIRECTORY_CREATE_FAILED("REP_009", "Failed to create directory for output path", HttpStatus.INTERNAL_SERVER_ERROR);
+
 
     private final String code;
     private final String message;

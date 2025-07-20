@@ -2,11 +2,13 @@ package org.unified.formats;
 
 import com.opencsv.CSVReader;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.input.BOMInputStream;
 import org.unified.common.enums.ErrorCode;
 import org.unified.common.exceptions.FormatException;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Slf4j
@@ -38,11 +40,15 @@ public class CSVFormat implements UnifiedFormat {
 
     public void parse(InputStream inputStream) {
         log.info("Starting Parsing CSV ---> UnifiedFormat");
-        try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream))) {
-            String[] headerLine = reader.readNext();
+        try (
+                BOMInputStream bomInputStream = BOMInputStream.builder().setInputStream(inputStream).get();
+                InputStreamReader reader = new InputStreamReader(bomInputStream, StandardCharsets.UTF_8);
+                CSVReader csvReader = new CSVReader(reader)
+        ) {
+            String[] headerLine = csvReader.readNext();
 
             extractHeadersFromCSV(headerLine);
-            processRowsFromCSV(reader);
+            processRowsFromCSV(csvReader);
 
         } catch (FormatException e) {
             throw e;
@@ -78,8 +84,7 @@ public class CSVFormat implements UnifiedFormat {
             int lineNumber = 2;
             String[] row;
             while ((row = reader.readNext()) != null) {
-
-                if (!validateCSCRow(row, lineNumber))
+                if (!validateCSVRow(row, lineNumber))
                     continue;
 
                 Map<String, Object> rowMap = new LinkedHashMap<>();
@@ -97,7 +102,7 @@ public class CSVFormat implements UnifiedFormat {
         }
     }
 
-    private boolean validateCSCRow(String[] row, int lineNumber) {
+    private boolean validateCSVRow(String[] row, int lineNumber) {
         if (row.length == 0 || Arrays.stream(row).allMatch(String::isBlank)) {
             log.warn("Skipping empty row at line {}", lineNumber);
             return false;

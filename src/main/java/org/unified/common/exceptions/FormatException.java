@@ -8,6 +8,7 @@ import org.unified.common.enums.ErrorCode;
 @Slf4j
 public class FormatException extends RuntimeException {
     private final ErrorCode errorCode;
+
     public FormatException(ErrorCode errorCode, Exception parentException) {
         super(parentException + "\nDescription:\n" + errorCode.getMessage());
         log.error("Format Exception Occurred!");
