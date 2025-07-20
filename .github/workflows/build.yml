@@ -59,25 +59,28 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Required for git tag to work
 
       - name: Set up Git
         run: |
-          git config user.name "${{ github.actor }}"
-          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Create Git Tag
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
         run: |
-          git tag -a v${{ github.event.inputs.release_version }} -m "Release v${{ github.event.inputs.release_version }}"
-          git push origin v${{ github.event.inputs.release_version }}
+          VERSION="v${{ github.event.inputs.release_version }}"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }} "$VERSION"
 
-      - name: Create GitHub Release
+      - name: Create GitHub Release and Upload Artifacts
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.event.inputs.release_version }}
           name: v${{ github.event.inputs.release_version }}
           generate_release_notes: true
-
-      - name: Upload JAR to GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
           files: target/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
