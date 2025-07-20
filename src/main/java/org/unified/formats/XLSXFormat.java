@@ -16,6 +16,11 @@ public class XLSXFormat implements UnifiedFormat {
     private final List<String> columnOrder = new ArrayList<>();
     private final String sourceName;
 
+    public XLSXFormat(InputStream xlsxStream, String sourceName) {
+        this.sourceName = sourceName != null ? sourceName : "XLSX";
+        parse(xlsxStream);
+    }
+
     @Override
     public List<Map<String, Object>> getDataRows() {
         return dataRows;
@@ -29,11 +34,6 @@ public class XLSXFormat implements UnifiedFormat {
     @Override
     public String getSourceName() {
         return sourceName;
-    }
-
-    public XLSXFormat(InputStream xlsxStream, String sourceName) {
-        this.sourceName = sourceName != null ? sourceName : "XLSX";
-        parse(xlsxStream);
     }
 
     public void parse(InputStream inputStream) {
