@@ -59,7 +59,13 @@ jobs:
       contents: write  # Required to push tags and create releases
 
     steps:
-      - name: Checkout Repository
+      - name: Check required input
+        if: ${{ github.event.inputs.release_version == '' }}
+        run: |
+          echo "ERROR: release_version is required when is_release_candidate is true"
+          exit 1
+
+      - name: Checkout Repository (full)
         uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Required to push tags
@@ -73,6 +79,8 @@ jobs:
         run: |
           git tag -a v${{ github.event.inputs.release_version }} -m "Release v${{ github.event.inputs.release_version }}"
           git push origin v${{ github.event.inputs.release_version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -83,10 +91,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Download JAR Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: unified-reporter-jar
+          path: jar/
+
       - name: Upload JAR to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.event.inputs.release_version }}
-          files: target/*.jar
+          files: |
+            jar/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
