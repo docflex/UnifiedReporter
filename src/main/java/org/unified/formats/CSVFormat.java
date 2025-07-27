@@ -109,11 +109,6 @@ public class CSVFormat implements UnifiedFormat {
      * @throws FormatException if headers are missing, empty, or duplicated
      */
     private void extractHeadersFromCSV(String[] headerLine) {
-        if (headerLine == null || headerLine.length == 0) {
-            log.error("❌ CSV header is missing or empty");
-            throw new FormatException(ErrorCode.CSV_HEADER_MISSING);
-        }
-
         Set<String> seen = new HashSet<>();
         for (String header : headerLine) {
             String trimmed = header.trim();

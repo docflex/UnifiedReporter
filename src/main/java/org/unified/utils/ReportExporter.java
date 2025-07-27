@@ -55,18 +55,15 @@ public class ReportExporter {
                 throw new ReportException(ErrorCode.REPORT_FILL_FAILED, e);
             }
 
-            try {
-                return switch (format) {
-                    case PDF -> exportToPdf(jasperPrint);
-                    case HTML -> exportToHtml(jasperPrint);
-                    case XML -> exportToXml(jasperPrint);
-                    case XLSX -> exportToXlsx(jasperPrint);
-                    default -> throw new ReportException(ErrorCode.REPORT_FORMAT_UNSUPPORTED);
-                };
-            } catch (Exception e) {
-                log.error("❌ Failed to export report", e);
-                throw new ReportException(ErrorCode.REPORT_EXPORT_FAILED, e);
-            }
+
+            return switch (format) {
+                case PDF -> exportToPdf(jasperPrint);
+                case HTML -> exportToHtml(jasperPrint);
+                case XML -> exportToXml(jasperPrint);
+                case XLSX -> exportToXlsx(jasperPrint);
+                default -> throw new ReportException(ErrorCode.REPORT_FORMAT_UNSUPPORTED);
+            };
+
         } catch (ReportException e) {
             throw e;
         } catch (Exception e) {
@@ -81,7 +78,7 @@ public class ReportExporter {
      * @param jasperPrint the filled JasperPrint object
      * @return the exported PDF as a byte array
      */
-    private static byte[] exportToPdf(JasperPrint jasperPrint) {
+    static byte[] exportToPdf(JasperPrint jasperPrint) {
         try {
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (JRException e) {
@@ -95,7 +92,7 @@ public class ReportExporter {
      * @param jasperPrint the filled JasperPrint object
      * @return the exported HTML as a byte array
      */
-    private static byte[] exportToHtml(JasperPrint jasperPrint) {
+    static byte[] exportToHtml(JasperPrint jasperPrint) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             HtmlExporter exporter = new HtmlExporter();
             exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -113,7 +110,7 @@ public class ReportExporter {
      * @param jasperPrint the filled JasperPrint object
      * @return the exported XML as a byte array
      */
-    private static byte[] exportToXml(JasperPrint jasperPrint) {
+    static byte[] exportToXml(JasperPrint jasperPrint) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             JRXmlExporter exporter = new JRXmlExporter();
             exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -131,7 +128,7 @@ public class ReportExporter {
      * @param jasperPrint the filled JasperPrint object
      * @return the exported XLSX file as a byte array
      */
-    private static byte[] exportToXlsx(JasperPrint jasperPrint) {
+    static byte[] exportToXlsx(JasperPrint jasperPrint) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             JRXlsxExporter exporter = new JRXlsxExporter();
 

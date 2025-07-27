@@ -97,7 +97,7 @@ public class XLSXFormat implements UnifiedFormat {
      * @param cell the cell from which to extract value
      * @return the extracted Java object value (String, Double, Boolean, Date, or null)
      */
-    private Object getCellValue(Cell cell) {
+    Object getCellValue(Cell cell) {
         if (cell == null) return null;
 
         return switch (cell.getCellType()) {

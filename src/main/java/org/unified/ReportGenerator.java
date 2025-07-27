@@ -63,13 +63,12 @@ public class ReportGenerator {
      *     <li>Exports the filled report into the requested output format</li>
      * </ol>
      *
-     * @param file                        A valid {@link UnifiedFormat} instance (e.g., XLSXFormat)
-     * @param jasperReportTemplateStream  Input stream of the Jasper template (.jasper or .jrxml)
-     * @param additionalReportParameters  Additional parameters for the Jasper report (e.g., metadata, dynamic values)
-     * @param exportFormat                Desired file export format (PDF, XLSX, HTML, XML)
+     * @param file                       A valid {@link UnifiedFormat} instance (e.g., XLSXFormat)
+     * @param jasperReportTemplateStream Input stream of the Jasper template (.jasper or .jrxml)
+     * @param additionalReportParameters Additional parameters for the Jasper report (e.g., metadata, dynamic values)
+     * @param exportFormat               Desired file export format (PDF, XLSX, HTML, XML)
      * @return A byte array representing the generated report file
-     *
-     * @throws ReportException if the input is invalid, template fails to load, or export fails
+     * @throws ReportException  if the input is invalid, template fails to load, or export fails
      * @throws RuntimeException if an unexpected error occurs during generation
      */
     public static byte[] generateReport(
@@ -78,17 +77,25 @@ public class ReportGenerator {
             Map<String, Object> additionalReportParameters,
             FileExportFormat exportFormat
     ) {
+        long startTime = System.nanoTime();
+
         try {
             UnifiedFormat inputFile = ReportValidators.validateInputFile(file);
 
             JasperReport reportTemplate = ReportValidators.validateJasperReport(jasperReportTemplateStream);
 
-            return ReportExporter.export(
+            byte[] output = ReportExporter.export(
                     inputFile.getDataRows(),
                     reportTemplate,
                     additionalReportParameters,
                     exportFormat
             );
+
+            long endTime = System.nanoTime();
+            long durationMillis = (endTime - startTime) / 1_000_000;
+
+            log.info("✅ Report generated successfully in {} ms (Format: {})", durationMillis, exportFormat);
+            return output;
 
         } catch (ReportException rex) {
             throw rex;
