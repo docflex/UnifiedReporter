@@ -1,17 +1,14 @@
 # Unified Data Parser and Report Generator
 
-This project provides a **pluggable**, **extensible**, and **framework-agnostic** solution to convert structured input data formats like **XLSX**, **CSV**, **JSON**, and **ByteStream** into a **Unified Data Format**, which can then be used to generate reports in **PDF**, **HTML**, or **XML** using **JasperReports** or similar tools.
-
+This project provides a **pluggable**, **extensible**, and **framework-agnostic** solution to convert structured input
+data formats like **XLSX**, **CSV**, **JSON**, and **ByteStream** into a **Unified Data Format**, which can then be used
+to generate reports in **PDF**, **HTML**, or **XML** using **JasperReports** or similar tools.
 
 ### 📦 Package & Build Status
 
 [![Maven Package](https://img.shields.io/badge/github--package-0.0.1--SNAPSHOT-blue)](https://github.com/docflex/UnifiedReporter/packages)
 
-
 [![Build & Tests](https://github.com/docflex/UnifiedReporter/actions/workflows/build.yml/badge.svg)](https://github.com/docflex/UnifiedReporter/actions/workflows/build.yml)
-
-
-
 
 ## Architecture Overview
 
@@ -59,7 +56,7 @@ This project provides a **pluggable**, **extensible**, and **framework-agnostic*
 ## 🏗 Project Modules
 
 | Module             | Purpose                                       |
-| ------------------ | --------------------------------------------- |
+|--------------------|-----------------------------------------------|
 | `formats`          | Parsers for CSV, XLSX, JSON, ByteStream       |
 | `common`           | Error codes, exceptions, and utility classes  |
 | `jasper-engine`    | Report rendering using JasperReports          |
@@ -73,12 +70,14 @@ This project provides a **pluggable**, **extensible**, and **framework-agnostic*
 ### ✅ As a **Library**
 
 ```java
-try (InputStream is = new FileInputStream("/path/to/file.xlsx")) {
-    UnifiedFormat format = new XLSXFormat(is, "MySource");
-    List<Map<String, Object>> data = format.getDataRows();
-    
-    // pass to Jasper engine or use for validation
-    documentCreator.generatePdf(data, templatePath);
+try(InputStream is = new FileInputStream("/path/to/file.xlsx")){
+UnifiedFormat format = new XLSXFormat(is, "MySource");
+List<Map<String, Object>> data = format.getDataRows();
+
+// pass to Jasper engine or use for validation
+    documentCreator.
+
+generatePdf(data, templatePath);
 }
 ```
 
@@ -97,8 +96,15 @@ try (InputStream is = new FileInputStream("/path/to/file.xlsx")) {
 ```java
 public interface UnifiedFormat {
     List<Map<String, Object>> getDataRows();
-    default List<String> getColumnOrder() { return null; }
-    default String getSourceName() { return "unnamed"; }
+
+    default List<String> getColumnOrder() {
+        return null;
+    }
+
+    default String getSourceName() {
+        return "unnamed";
+    }
+
     default void validateFields(List<String> requiredColumns) throws FormatException;
 }
 ```
@@ -136,6 +142,7 @@ Unit tests are written using **JUnit 5** with in-memory test files for:
 * Field validation
 
 ```java
+
 @Test
 void testValidXlsxParsing() {
     InputStream inputStream = getClass().getResourceAsStream("/valid.xlsx");
@@ -154,9 +161,9 @@ If required, you can introduce fluent builders for complex configuration like:
 
 ```java
 UnifiedFormat format = XLSXFormat.builder()
-    .withInputStream(stream)
-    .withSourceName("Sheet1")
-    .build();
+        .withInputStream(stream)
+        .withSourceName("Sheet1")
+        .build();
 ```
 
 ---

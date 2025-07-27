@@ -90,4 +90,19 @@ class CSVFormatTest {
         CSVFormat parser = new CSVFormat(inputStream, null);
         assertEquals("CSV", parser.getSourceName());
     }
+
+    @Test
+    void testBlankRowsAreSkipped() {
+        InputStream inputStream = getClass().getResourceAsStream("/CSV/skip_blank_rows.csv");
+        assertNotNull(inputStream, "Test CSV input stream must not be null");
+
+        CSVFormat parser = new CSVFormat(inputStream, "SkipBlank");
+
+        List<Map<String, Object>> rows = parser.getDataRows();
+        assertEquals(2, rows.size(), "Only two non-empty rows should be parsed");
+
+        assertEquals("John", rows.get(0).get("Name"));
+        assertEquals("Alice", rows.get(1).get("Name"));
+    }
+
 }

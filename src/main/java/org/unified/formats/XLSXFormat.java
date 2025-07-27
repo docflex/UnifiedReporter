@@ -9,6 +9,12 @@ import org.unified.common.exceptions.FormatException;
 import java.io.InputStream;
 import java.util.*;
 
+/**
+ * A parser class that implements {@link UnifiedFormat} for reading Excel (XLSX) files.
+ * <p>
+ * This class uses Apache POI to extract data from the first sheet of an XLSX file.
+ * It validates headers and processes each row into a list of maps.
+ */
 @Slf4j
 public class XLSXFormat implements UnifiedFormat {
 
@@ -16,27 +22,56 @@ public class XLSXFormat implements UnifiedFormat {
     private final List<String> columnOrder = new ArrayList<>();
     private final String sourceName;
 
+    /**
+     * Constructs an {@code XLSXFormat} parser from an {@link InputStream}.
+     *
+     * @param xlsxStream the input stream of the XLSX file
+     * @param sourceName optional logical name for the file (used in logs); defaults to "XLSX" if null
+     */
     public XLSXFormat(InputStream xlsxStream, String sourceName) {
         this.sourceName = sourceName != null ? sourceName : "XLSX";
         parse(xlsxStream);
     }
 
+    /**
+     * Returns the list of parsed data rows from the XLSX sheet.
+     * Each row is represented as a {@link Map} with headers as keys.
+     *
+     * @return list of data rows
+     */
     @Override
     public List<Map<String, Object>> getDataRows() {
         return dataRows;
     }
 
+    /**
+     * Returns the column order as defined in the Excel header row.
+     *
+     * @return list of header names
+     */
     @Override
     public List<String> getColumnOrder() {
         return columnOrder;
     }
 
+    /**
+     * Returns the name of the source Excel file.
+     *
+     * @return source name
+     */
     @Override
     public String getSourceName() {
         return sourceName;
     }
 
-    public void parse(InputStream inputStream) {
+    /**
+     * Parses the XLSX input stream using Apache POI.
+     * Extracts headers and rows, and populates internal data structures.
+     *
+     * @param inputStream the input stream of the XLSX file
+     * @throws FormatException if parsing fails due to invalid structure or I/O error
+     */
+    private void parse(InputStream inputStream) {
         log.info("Starting Parsing XLSX ---> UnifiedFormat");
         try (Workbook workbook = new XSSFWorkbook(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0); // or by name
@@ -46,15 +81,23 @@ public class XLSXFormat implements UnifiedFormat {
             processRowsFromExcel(rowIterator);
 
         } catch (FormatException e) {
+            log.error("❌ Format error while parsing XLSX file", e);
             throw e;
         } catch (Exception e) {
+            log.error("❌ Unexpected error while parsing XLSX file", e);
             throw new FormatException(ErrorCode.XLSX_PARSE_ERROR, e);
         }
     }
 
     // Utility Functions
 
-    private Object getCellValue(Cell cell) {
+    /**
+     * Extracts the value from an Excel cell based on its type.
+     *
+     * @param cell the cell from which to extract value
+     * @return the extracted Java object value (String, Double, Boolean, Date, or null)
+     */
+    Object getCellValue(Cell cell) {
         if (cell == null) return null;
 
         return switch (cell.getCellType()) {
@@ -68,8 +111,16 @@ public class XLSXFormat implements UnifiedFormat {
         };
     }
 
+    /**
+     * Extracts headers from the first row of the Excel sheet.
+     * Validates for text type, non-blank values, and uniqueness.
+     *
+     * @param rowIterator iterator starting at the first row of the sheet
+     * @throws FormatException if headers are missing, duplicated, or invalid
+     */
     private void extractHeadersFromExcel(Iterator<Row> rowIterator) {
         if (!rowIterator.hasNext()) {
+            log.error("❌ Missing headers: sheet is empty");
             throw new FormatException(ErrorCode.XLSX_MISSING_HEADERS, new Exception("Missing headers: the sheet is empty"));
         }
         Row headerRow = rowIterator.next();
@@ -83,6 +134,13 @@ public class XLSXFormat implements UnifiedFormat {
         log.info("Extracted headers: {}", columnOrder);
     }
 
+    /**
+     * Validates and extracts each row of data from the Excel sheet.
+     * Adds them as maps to the internal list of data rows.
+     *
+     * @param rowIterator iterator positioned after the header row
+     * @throws FormatException if processing fails
+     */
     private void processRowsFromExcel(Iterator<Row> rowIterator) {
         int rowIndex = 1;
         while (rowIterator.hasNext()) {
@@ -99,20 +157,37 @@ public class XLSXFormat implements UnifiedFormat {
         }
     }
 
+    /**
+     * Validates the header cell:
+     * <ul>
+     *     <li>Must be of type {@code STRING}</li>
+     *     <li>Must not be blank</li>
+     *     <li>Must be unique</li>
+     * </ul>
+     *
+     * @param header the header cell to validate
+     * @param index  the column index (used for logging)
+     * @throws FormatException if any condition fails
+     */
     private void validateExcelHeaders(Cell header, int index) {
         if (header == null || header.getCellType() != CellType.STRING) {
-            throw new FormatException(ErrorCode.XLSX_INVALID_HEADER_TYPE,
-                    new Exception("Header at column " + index + " must be text, found: " +
-                            (header == null ? "null" : header.getCellType())));
+            String msg = "Header at column " + index + " must be text. Found: " +
+                    (header == null ? "null" : header.getCellType());
+            log.error("❌ {}", msg);
+            throw new FormatException(ErrorCode.XLSX_INVALID_HEADER_TYPE, new Exception(msg));
         }
+
         String headerString = header.getStringCellValue().trim();
         if (headerString.isBlank()) {
-            throw new FormatException(ErrorCode.XLSX_NULL_HEADER,
-                    new Exception("Header at column index " + index + " is blank"));
+            String msg = "Header at column index " + index + " is blank";
+            log.error("❌ {}", msg);
+            throw new FormatException(ErrorCode.XLSX_NULL_HEADER, new Exception(msg));
         }
+
         if (columnOrder.contains(headerString)) {
-            throw new FormatException(ErrorCode.XLSX_DUPLICATE_HEADER,
-                    new IllegalArgumentException("Duplicate header: '" + header + "' at index " + index));
+            String msg = "Duplicate header: '" + headerString + "' at index " + index;
+            log.error("❌ {}", msg);
+            throw new FormatException(ErrorCode.XLSX_DUPLICATE_HEADER, new IllegalArgumentException(msg));
         }
     }
 }
