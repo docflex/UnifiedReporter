@@ -4,11 +4,11 @@ This project provides a **pluggable**, **extensible**, and **framework-agnostic*
 data formats like **XLSX**, **CSV**, **JSON**, and **ByteStream** into a **Unified Data Format**, which can then be used
 to generate reports in **PDF**, **HTML**, or **XML** using **JasperReports** or similar tools.
 
-### 📦 Package & Build Status
-
-[![Maven Package](https://img.shields.io/badge/github--package-0.0.1--SNAPSHOT-blue)](https://github.com/docflex/UnifiedReporter/packages)
+### 📦 Build & Release Status
 
 [![Build & Tests](https://github.com/docflex/UnifiedReporter/actions/workflows/build.yml/badge.svg)](https://github.com/docflex/UnifiedReporter/actions/workflows/build.yml)
+
+[![Latest Release](https://img.shields.io/github/v/release/docflex/UnifiedReporter?label=Release&sort=semver)](https://github.com/docflex/UnifiedReporter/releases)
 
 ## Architecture Overview
 
@@ -31,6 +31,74 @@ to generate reports in **PDF**, **HTML**, or **XML** using **JasperReports** or 
 4. Passed to a **Document Creator Service** (e.g., using JasperReports) with optional template configuration (JRXML).
 
 ---
+
+## 🧪 How to Use
+
+### ✅ As a **Library**
+
+```java
+try (InputStream is = new FileInputStream("/path/to/file.xlsx");
+InputStream jrxmlTemplate = getClass().getResourceAsStream("/template.jrxml")) {
+
+// Wrap your data
+UnifiedFormat format = new XLSXFormat(is, "Sheet1");
+
+// Define optional parameters
+Map<String, Object> params = Map.of("ReportTitle", "My Excel Report");
+
+// Generate PDF report
+byte[] report = ReportGenerator.generateReport(
+        format,
+        jrxmlTemplate,
+        params,
+        FileExportFormat.PDF
+);
+
+// Save to file or return as HTTP response
+}
+```
+
+---
+
+### ✅ As a **Spring Service**
+
+1. Define a REST controller:
+
+   ```java
+   @RestController
+   @RequestMapping("/reports")
+   public class ReportController {
+
+       @PostMapping(value = "/xlsx", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+       public ResponseEntity<byte[]> generateReport(
+               @RequestParam MultipartFile file
+       ) throws IOException {
+           try (InputStream is = file.getInputStream();
+                InputStream template = getClass().getResourceAsStream("/template.jrxml")) {
+
+               XLSXFormat input = new XLSXFormat(is, "Sheet1");
+
+               byte[] report = ReportGenerator.generateReport(
+                       input,
+                       template,
+                       Map.of(),
+                       FileExportFormat.PDF
+               );
+
+               return ResponseEntity.ok()
+                       .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=report.pdf")
+                       .body(report);
+           }
+       }
+   }
+   ```
+
+2. Inject format classes as needed (no annotation required unless manually registering):
+
+    * The `XLSXFormat` or `CSVFormat` classes can be instantiated directly.
+    * No Spring annotations are required unless wrapping them in a custom service or bean.
+---
+
 
 ### 🧱 Component Design
 
@@ -62,30 +130,6 @@ to generate reports in **PDF**, **HTML**, or **XML** using **JasperReports** or 
 | `jasper-engine`    | Report rendering using JasperReports          |
 | `unified-core`     | Interface `UnifiedFormat`, data normalization |
 | `document-creator` | Consumes unified format to generate reports   |
-
----
-
-## 🧪 How to Use
-
-### ✅ As a **Library**
-
-```java
-try(InputStream is = new FileInputStream("/path/to/file.xlsx")){
-UnifiedFormat format = new XLSXFormat(is, "MySource");
-List<Map<String, Object>> data = format.getDataRows();
-
-// pass to Jasper engine or use for validation
-    documentCreator.
-
-generatePdf(data, templatePath);
-}
-```
-
-### ✅ As a **Spring Service**
-
-1. Annotate format classes like `@Component`
-2. Inject them via Spring DI where needed
-3. Define `@RestController` to expose input and output endpoints
 
 ---
 
@@ -192,5 +236,3 @@ Pull requests are welcome! Please include:
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
-
-
